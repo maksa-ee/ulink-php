@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PhpProjectConfiguration">
+    <sdk>
+      <PhpSdkConfig version="5.3.3" home="D:\coding\ZendServer\ZendServer\bin">
+        <include_paths>
+          <path value="D:\coding\ZendServer\ZendServer\bin\PEAR" />
+        </include_paths>
+      </PhpSdkConfig>
+    </sdk>
+  </component>
+</project>
+
