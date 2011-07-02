@@ -15,7 +15,8 @@ class RequestTests extends \PHPUnit_Framework_TestCase {
     public function testAuthRequest() {
         $request = new AuthRequest();
         $request->setTimestamp(123);
-        $this->assertEquals("{\"type\":\"auth\",\"timestamp\":123,\"data\":{}}", $request->toJson());
+        $request->setClientTransactionId(456);
+        $this->assertEquals("{\"type\":\"auth\",\"timestamp\":123,\"data\":{},\"id\":456}", $request->toJson());
     }
 
     public function testPayRequest() {
@@ -23,10 +24,11 @@ class RequestTests extends \PHPUnit_Framework_TestCase {
         $request->setAmount(new Money('23.50'));
         $request->setCurrency("EUR");
         $request->setTimestamp(123);
+        $request->setClientTransactionId(456);
 
         $this->assertEquals("{\"type\":\"pay\",\"timestamp\":123,\"data\":{" .
                     "\"amount\":\"23.50\",\"currency\":\"EUR\"" .
-                "}}", $request->toJson());
+                "},\"id\":456}", $request->toJson());
     }
 
     public function testPayRequestWithOrder() {

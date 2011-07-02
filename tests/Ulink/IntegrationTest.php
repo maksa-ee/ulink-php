@@ -33,11 +33,6 @@ I2SvDkQ5CmrzkW5qPaE2oO7BSqAhRZxiYpZFb5CI
 EOD;
     }
 
-    public function testSignCompare() {
-        $data = "foo";
-        var_dump(base64_encode(CryptoUtils::sign($data, $this->getPrivateKeyPem())));
-    }
-
     /**
      * @test
      * @return void

@@ -26,12 +26,26 @@ abstract class AbstractRequest implements Request {
     }
 
     public function toJson() {
-         return json_encode(array(
+        $data = array(
                     'type' => $this->getType(),
                     'timestamp' => $this->getTimestamp(),
                     'data' => $this->getJsonData()
-               ));
+               );
+        if ($this->getClientTransactionId()) {
+            $data['id'] = $this->getClientTransactionId();
+        }
+         return json_encode($data);
     }
 
     abstract protected function getJsonData();
+
+    public function setClientTransactionId($clientTransactionId)
+    {
+        $this->clientTransactionId = $clientTransactionId;
+    }
+
+    public function getClientTransactionId()
+    {
+        return $this->clientTransactionId;
+    }
 }
