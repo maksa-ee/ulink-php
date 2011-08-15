@@ -44,7 +44,7 @@ class Order {
     {
         $order = new Order();
         foreach($jsonData as $item) {
-            $orderItem = new OrderItem($item->name, $item->descr, new Money($item->price, $item->qty));
+            $orderItem = new OrderItem($item->name, $item->descr, new Money($item->price), $item->qty);
             $order->addItem($orderItem);
         }
         return $order;

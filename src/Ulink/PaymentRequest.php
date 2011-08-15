@@ -66,7 +66,7 @@ class PaymentRequest extends AbstractRequest {
         $request = new PaymentRequest();
         $request->setAmount(new Money($jsonData->amount));
         $request->setCurrency($jsonData->currency);
-        if ($jsonData->order) {
+        if (isset($jsonData->order) && $jsonData->order) {
             $request->setOrder(Order::createFromJson($jsonData->order));
         }
         return $request;
