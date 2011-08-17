@@ -9,7 +9,7 @@
 
 namespace Ulink;
 
-class AuthRequest extends AbstractRequest {
+class AuthRequest extends AbstractRequest implements Response {
 
     public function getType() {
         return "auth";
@@ -17,7 +17,9 @@ class AuthRequest extends AbstractRequest {
 
 
     protected function getJsonData() {
-        return new \stdClass();
+        $data = parent::getJsonData();
+        $data['data'] = array();
+        return $data;
     }
 
     public static function createFromJson($jsonData)

@@ -16,7 +16,7 @@ class RequestTests extends \PHPUnit_Framework_TestCase {
         $request = new AuthRequest();
         $request->setTimestamp(123);
         $request->setClientTransactionId(456);
-        $this->assertEquals("{\"type\":\"auth\",\"timestamp\":123,\"data\":{},\"id\":456}", $request->toJson());
+        $this->assertEquals("{\"type\":\"auth\",\"timestamp\":123,\"id\":456,\"data\":{}}", $request->toJson());
     }
 
     public function testPayRequest() {
@@ -26,11 +26,14 @@ class RequestTests extends \PHPUnit_Framework_TestCase {
         $request->setTimestamp(123);
         $request->setClientTransactionId(456);
 
-        $this->assertEquals("{\"type\":\"pay\",\"timestamp\":123,\"data\":{" .
+        $this->assertEquals("{\"type\":\"pay\",\"timestamp\":123,\"id\":456,\"data\":{" .
                     "\"amount\":\"23.50\",\"currency\":\"EUR\"" .
-                "},\"id\":456}", $request->toJson());
+                "}}", $request->toJson());
     }
 
+    /**
+     * @group pay-req-order
+     */
     public function testPayRequestWithOrder() {
 
         $order = $this->getMock('Ulink\Order');

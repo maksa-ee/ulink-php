@@ -63,8 +63,6 @@ EOD;
 
         $rawData = $packet->toJson();
 
-        var_dump($rawData);
-
         $packet = TransportPacket::createFromJson($rawData);
         $this->assertNotNull($packet);
 

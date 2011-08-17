@@ -26,18 +26,24 @@ abstract class AbstractRequest implements Request {
     }
 
     public function toJson() {
+        $data = $this->getJsonData();
+        if (isset($data['data']) && is_array($data['data']) && !count($data['data'])) {
+            $data['data'] = new \stdClass();
+        }
+        return json_encode($data);
+    }
+
+    protected function getJsonData() {
+
         $data = array(
                     'type' => $this->getType(),
-                    'timestamp' => $this->getTimestamp(),
-                    'data' => $this->getJsonData()
+                    'timestamp' => $this->getTimestamp()
                );
         if ($this->getClientTransactionId()) {
             $data['id'] = $this->getClientTransactionId();
         }
-         return json_encode($data);
+        return $data;
     }
-
-    abstract protected function getJsonData();
 
     public function setClientTransactionId($clientTransactionId)
     {
@@ -47,5 +53,10 @@ abstract class AbstractRequest implements Request {
     public function getClientTransactionId()
     {
         return $this->clientTransactionId;
+    }
+
+    public static function clazz()
+    {
+        return get_called_class();
     }
 }

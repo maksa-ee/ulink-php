@@ -13,6 +13,10 @@ class PaymentRequest extends AbstractRequest {
 
     private $amount;
     private $currency;
+
+    /**
+     * @var Order
+     */
     private $order;
 
 
@@ -51,18 +55,25 @@ class PaymentRequest extends AbstractRequest {
     }
 
     protected function getJsonData() {
-        $data = array(
+        $localData = array(
             'amount' => (string)$this->getAmount(),
             'currency' => $this->getCurrency(),
         );
+
         if ($this->order) {
-            $data['order'] = $this->order->getJsonData();
+            $localData['order'] = $this->order->getJsonData();
         }
+
+        $data = parent::getJsonData();
+        $data['data'] = $localData;
+        
         return $data;
     }
     
-    public static function createFromJson($jsonData)
+    public static function createFromJson($json)
     {
+        $jsonData = $json->data;
+        
         $request = new PaymentRequest();
         $request->setAmount(new Money($jsonData->amount));
         $request->setCurrency($jsonData->currency);

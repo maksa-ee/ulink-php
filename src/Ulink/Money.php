@@ -35,6 +35,6 @@ class Money
 
     public function __toString()
     {
-        return $this->amount;
+        return (string) $this->amount;
     }
 }
