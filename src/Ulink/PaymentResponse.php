@@ -73,16 +73,19 @@ class PaymentResponse extends PaymentRequest implements Response {
 
         $data = $json->data;
 
-        $request = new PaymentResponse();
-        $request->setAmount(new Money($data->amount));
-        $request->setCurrency($data->currency);
-        if (isset($data->order)) {
-            $request->setOrder(Order::createFromJson($data->order));
+        $response = new PaymentResponse();
+        $response->setAmount(new Money($data->amount));
+        $response->setCurrency($data->currency);
+        if (isset($json->id) && $json->id) {
+            $response->setClientTransactionId($json->id);
         }
-        $request->setSuccess($json->success);
-        $request->setErrors($json->errors);
-        $request->setErrorCodes($json->errorCodes);
+        if (isset($data->order)) {
+            $response->setOrder(Order::createFromJson($data->order));
+        }
+        $response->setSuccess($json->success);
+        $response->setErrors($json->errors);
+        $response->setErrorCodes($json->errorCodes);
 
-        return $request;
+        return $response;
     }
 }

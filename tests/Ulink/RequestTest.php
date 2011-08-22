@@ -10,16 +10,19 @@
 namespace Ulink;
 
 
-class RequestTests extends \PHPUnit_Framework_TestCase {
+class RequestTests extends \PHPUnit_Framework_TestCase
+{
 
-    public function testAuthRequest() {
+    public function testAuthRequest()
+    {
         $request = new AuthRequest();
         $request->setTimestamp(123);
         $request->setClientTransactionId(456);
         $this->assertEquals("{\"type\":\"auth\",\"timestamp\":123,\"id\":456,\"data\":{}}", $request->toJson());
     }
 
-    public function testPayRequest() {
+    public function testPayRequest()
+    {
         $request = new PaymentRequest();
         $request->setAmount(new Money('23.50'));
         $request->setCurrency("EUR");
@@ -27,14 +30,26 @@ class RequestTests extends \PHPUnit_Framework_TestCase {
         $request->setClientTransactionId(456);
 
         $this->assertEquals("{\"type\":\"pay\",\"timestamp\":123,\"id\":456,\"data\":{" .
-                    "\"amount\":\"23.50\",\"currency\":\"EUR\"" .
-                "}}", $request->toJson());
+                            "\"amount\":\"23.50\",\"currency\":\"EUR\"" .
+                            "}}", $request->toJson());
+    }
+
+    /**
+     * @group client-id
+     */
+    public function testClientTransactionId()
+    {
+        $request = PaymentRequest::createFromJson(json_decode("{\"type\":\"pay\",\"timestamp\":123,\"id\":456,\"data\":{" .
+                            "\"amount\":\"23.50\",\"currency\":\"EUR\"" .
+                            "}}"));
+        $this->assertEquals(456, $request->getClientTransactionId());
     }
 
     /**
      * @group pay-req-order
      */
-    public function testPayRequestWithOrder() {
+    public function testPayRequestWithOrder()
+    {
 
         $order = $this->getMock('Ulink\Order');
         $order->expects($this->any())->method('getJsonData')->will($this->returnValue('foo'));
@@ -46,28 +61,30 @@ class RequestTests extends \PHPUnit_Framework_TestCase {
         $request->setOrder($order);
 
         $this->assertEquals("{\"type\":\"pay\",\"timestamp\":123,\"data\":{" .
-                    "\"amount\":\"23.50\",\"currency\":\"EUR\"" .
-                ",\"order\":\"foo\"}}", $request->toJson());
+                            "\"amount\":\"23.50\",\"currency\":\"EUR\"" .
+                            ",\"order\":\"foo\"}}", $request->toJson());
     }
 
-    public function orderListToJson() {
+    public function orderListToJson()
+    {
 
         $item1 = $this->getMock('Ulink\OrderItem');
         $item1->expects($this->any())->method('getJsonData')->will($this->returnValue('foo'));
         $item2 = $this->getMock('Ulink\OrderItem');
         $item2->expects($this->any())->method('getJsonData')->will($this->returnValue('bar'));
 
-        $items = array($item1,$item2);
+        $items = array($item1, $item2);
 
         $order = new Order();
         $order->setItems($items);
 
-        $this->assertEquals(array('foo','bar'), $order->getJsonData());
+        $this->assertEquals(array('foo', 'bar'), $order->getJsonData());
     }
 
-    public function orderItemToJson() {
+    public function orderItemToJson()
+    {
         $item = new OrderItem("foo", "Tom's \"big\" dog", new Money('35.90'), 2);
 
-        assertEquals(array('name' => "foo", 'descr' => "Tom's \"big\" dog" , 'qty' => 2, 'price' => 35.90), $item->getJsonData());
+        assertEquals(array('name' => "foo", 'descr' => "Tom's \"big\" dog", 'qty' => 2, 'price' => 35.90), $item->getJsonData());
     }
 }

@@ -23,7 +23,12 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals("{\"type\":\"auth-response\",\"timestamp\":123,\"id\":456,\"data\":{},\"success\":true,\"errors\":[],\"errorCodes\":[]}", $response->toJson());
     }
 
-    
+    public function testClientTransactionIdPay()
+    {
+        $response = RequestFactory::createFromJson("{\"type\":\"pay-response\",\"timestamp\":123,\"id\":456,\"data\":{\"amount\":\"23.50\",\"currency\":\"EUR\"},\"success\":true,\"errors\":[],\"errorCodes\":[]}");
+        $this->assertEquals(456, $response->getClientTransactionId());
+    }
+
     public function testFailedAuthResponse() {
 
         $response = new AuthResponse();
