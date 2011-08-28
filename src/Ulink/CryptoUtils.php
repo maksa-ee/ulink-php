@@ -1,22 +1,18 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: Alex
- * Date: 6/24/11
- * Time: 12:03 PM
- * To change this template use File | Settings | File Templates.
- */
 
 namespace Ulink;
 
-class CryptoUtils {
-
-    public static function generateRSAKeyPair() {
-
+/**
+ * @author Alex Rudakov <alexandr.rudakov@modera.net>
+ */
+class CryptoUtils
+{
+    public static function generateRSAKeyPair()
+    {
         $res = openssl_pkey_new(); // will work only with properly configured openssl.cnf
 
         $privkey = "";
-        
+
         // Get private key
         openssl_pkey_export($res, $privkey);
 
@@ -60,9 +56,7 @@ class CryptoUtils {
     public static function unseal($sealed, $privateKey)
     {
         list($sealed, $Xevk) = explode('@', $sealed);
-        openssl_open(base64_decode($sealed), $opened, base64_decode($Xevk), $privateKey)
-	            or die(openssl_error_string());
+        openssl_open(base64_decode($sealed), $opened, base64_decode($Xevk), $privateKey) or die(openssl_error_string());
         return $opened;
     }
-
 }

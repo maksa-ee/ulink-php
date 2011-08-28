@@ -1,22 +1,19 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: Alex
- * Date: 6/24/11
- * Time: 6:26 PM
- * To change this template use File | Settings | File Templates.
- */
 
 namespace Ulink;
 
-class KeyPair {
-
+/**
+ * @author Alex Rudakov <alexandr.rudakov@modera.net>
+ */
+class KeyPair
+{
     private $privateKey;
     private $publicKey;
 
-    public function __construct($privkey, $pubkey) {
+    public function __construct($privkey, $pubkey)
+    {
         $this->privateKey = $privkey;
-        $this->publicKey = $pubkey;
+        $this->publicKey  = $pubkey;
     }
 
     public function setPrivateKey($privateKey)

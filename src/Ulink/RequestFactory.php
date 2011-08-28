@@ -1,18 +1,14 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: Alex
- * Date: 6/26/11
- * Time: 7:51 PM
- * To change this template use File | Settings | File Templates.
- */
 
 namespace Ulink;
 
-class RequestFactory {
-
-    public static function createFromJson($json) {
-
+/**
+ * @author Alex Rudakov <alexandr.rudakov@modera.net>
+ */
+class RequestFactory
+{
+    public static function createFromJson($json)
+    {
         $jsonData = json_decode($json);
 
         $type = $jsonData->type;

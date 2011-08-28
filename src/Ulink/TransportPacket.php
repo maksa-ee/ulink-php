@@ -1,20 +1,15 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: Alex
- * Date: 6/24/11
- * Time: 12:13 PM
- * To change this template use File | Settings | File Templates.
- */
 
 namespace Ulink;
 
-class TransportPacket {
-
+/**
+ * @author Alex Rudakov <alexandr.rudakov@modera.net>
+ */
+class TransportPacket
+{
     private $request;
     private $signature;
     private $clientId;
-
 
     public function setClientId($clientId)
     {
@@ -60,13 +55,14 @@ class TransportPacket {
         $packet->setSignature(base64_decode($parts[4]));
         return $packet;
     }
-    public function validateAgainstKey($publicKey) {
 
+    public function validateAgainstKey($publicKey)
+    {
         return CryptoUtils::isValidRSASignature(
-                    $this->getRequest(),
-                    $this->getSignature(),
-                    $publicKey
-            );
+            $this->getRequest(),
+            $this->getSignature(),
+            $publicKey
+        );
     }
 
 }

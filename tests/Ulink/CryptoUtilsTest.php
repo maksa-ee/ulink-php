@@ -3,14 +3,10 @@
 namespace Ulink;
 
 /**
- * Created by JetBrains PhpStorm.
- * User: Alex
- * Date: 6/24/11
- * Time: 5:57 PM
- * To change this template use File | Settings | File Templates.
+ * @author Alex Rudakov <alexandr.rudakov@modera.net>
  */
- 
-class CryptoUtilsTest extends \PHPUnit_Framework_TestCase {
+class CryptoUtilsTest extends \PHPUnit_Framework_TestCase
+{
 //
 //    /**
 //     * @test
@@ -28,8 +24,8 @@ class CryptoUtilsTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function readAndVerifyWithRealKeysKey() {
-
+    public function readAndVerifyWithRealKeysKey()
+    {
         // You can get a simple private/public key pair using:
         // openssl genrsa 512 >private_key.txt
         // openssl rsa -pubout <private_key.txt >public_key.txt
@@ -74,14 +70,14 @@ EOD;
 
         $this->assertNotEquals($myData, $sealed);
         $this->assertEquals($myData, $opened);
-
     }
 
     /**
      * @Test
      * @return void
      */
-    public function testUnsealFromJava() {
+    public function testUnsealFromJava()
+    {
         $privateKey =  <<<EOD
 -----BEGIN RSA PRIVATE KEY-----
 MIICXgIBAAKBgQCr6s9ae6uMrAdXUNpxRcBfHUMp61jkIMbRcirjn6W02JVaoyyl

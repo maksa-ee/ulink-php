@@ -1,16 +1,12 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: Alex
- * Date: 6/24/11
- * Time: 12:04 PM
- * To change this template use File | Settings | File Templates.
- */
 
 namespace Ulink;
 
-interface Request {
-
+/**
+ * @author Alex Rudakov <alexandr.rudakov@modera.net>
+ */
+interface Request
+{
     const CURRENCY_EURO = "EUR";
     const CURRENCY_US_DOLLAR = "USD";
 
@@ -23,4 +19,7 @@ interface Request {
      * Converts request to json string
      */
     public function toJson();
+
+    public function getGoBackUrl();
+    public function getResponseUrl();
 }

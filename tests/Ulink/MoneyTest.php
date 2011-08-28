@@ -1,14 +1,10 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: Alex
- * Date: 6/24/11
- * Time: 12:25 PM
- * To change this template use File | Settings | File Templates.
- */
 
 namespace Ulink;
 
+/**
+ * @author Alex Rudakov <alexandr.rudakov@modera.net>
+ */
 class MoneyTest extends \PHPUnit_Framework_TestCase
 {
     public function testMoneyRepresentationAsAStringIncludesDecimals()

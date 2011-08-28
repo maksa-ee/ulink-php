@@ -1,16 +1,12 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: Alex
- * Date: 6/24/11
- * Time: 12:04 PM
- * To change this template use File | Settings | File Templates.
- */
 
 namespace Ulink;
 
-class OrderItem {
-
+/**
+ * @author Alex Rudakov <alexandr.rudakov@modera.net>
+ */
+class OrderItem
+{
     private $name;
     private $description;
     private $quantity;
@@ -64,12 +60,13 @@ class OrderItem {
         return $this->quantity;
     }
 
-    public function getJsonData() {
+    public function getJsonData()
+    {
         return array(
-            'name' => $this->getName(),
+            'name'  => $this->getName(),
             'descr' => $this->getDescription(),
-            'qty' => $this->getQuantity(),
-            'price' => (string) $this->getOneItemPrice()
+            'qty'   => $this->getQuantity(),
+            'price' => (string) $this->getOneItemPrice(),
         );
     }
 }

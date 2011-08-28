@@ -1,18 +1,17 @@
 <?php
-/**
- * Date: 8/17/11
- * Time: 11:19 AM
- * @author Alex Rudakov <alexandr.rudakov@modera.net>
- */
 
 namespace Ulink;
- 
-class PaymentResponse extends PaymentRequest implements Response {
 
-    
+/**
+ * @author Alex Rudakov <alexandr.rudakov@modera.net>
+ * @author Cravler <http://github.com/cravler>
+ */
+class PaymentResponse extends PaymentRequest implements Response
+{
     private $isSuccess;
+    private $isTest = true;
 
-    private $errors = array();
+    private $errors     = array();
     private $errorCodes = array();
 
     public function getType()
@@ -23,9 +22,12 @@ class PaymentResponse extends PaymentRequest implements Response {
     public function getJsonData()
     {
         $data = parent::getJsonData();
-        $data["success"] = $this->isSuccess();
-        $data["errors"] = $this->getErrors();
+
+        $data["success"]    = $this->isSuccess();
+        $data["test"]       = $this->isTest();
+        $data["errors"]     = $this->getErrors();
         $data["errorCodes"] = $this->getErrorCodes();
+
         return $data;
     }
 
@@ -69,8 +71,18 @@ class PaymentResponse extends PaymentRequest implements Response {
         return $this->isSuccess;
     }
 
-    public static function createFromJson($json) {
+    public function setTest($isTest)
+    {
+        $this->isTest = $isTest;
+    }
 
+    public function isTest()
+    {
+        return $this->isTest;
+    }
+
+    public static function createFromJson($json)
+    {
         $data = $json->data;
 
         $response = new PaymentResponse();
@@ -79,10 +91,19 @@ class PaymentResponse extends PaymentRequest implements Response {
         if (isset($json->id) && $json->id) {
             $response->setClientTransactionId($json->id);
         }
+        if (isset($json->{'response-url'}) && $json->{'response-url'}) {
+            $request->setResponseUrl($json->{'response-url'});
+        }
+        if (isset($json->{'back-url'}) && $json->{'back-url'}) {
+            $request->setGoBackUrl($json->{'back-url'});
+        }
         if (isset($data->order)) {
             $response->setOrder(Order::createFromJson($data->order));
         }
         $response->setSuccess($json->success);
+        if (isset($data->test)) {
+            $response->setTest($json->test);
+        }
         $response->setErrors($json->errors);
         $response->setErrorCodes($json->errorCodes);
 

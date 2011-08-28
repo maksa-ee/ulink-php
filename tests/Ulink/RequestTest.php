@@ -1,24 +1,19 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: Alex
- * Date: 6/24/11
- * Time: 12:17 PM
- * To change this template use File | Settings | File Templates.
- */
 
 namespace Ulink;
 
-
+/**
+ * @author Alex Rudakov <alexandr.rudakov@modera.net>
+ * @author Cravler <http://github.com/cravler>
+ */
 class RequestTests extends \PHPUnit_Framework_TestCase
 {
-
     public function testAuthRequest()
     {
         $request = new AuthRequest();
         $request->setTimestamp(123);
         $request->setClientTransactionId(456);
-        $this->assertEquals("{\"type\":\"auth\",\"timestamp\":123,\"id\":456,\"data\":{}}", $request->toJson());
+        $this->assertEquals("{\"type\":\"auth\",\"timestamp\":123,\"response-url\":null,\"back-url\":null,\"id\":456,\"data\":{}}", $request->toJson());
     }
 
     public function testPayRequest()
@@ -28,8 +23,10 @@ class RequestTests extends \PHPUnit_Framework_TestCase
         $request->setCurrency("EUR");
         $request->setTimestamp(123);
         $request->setClientTransactionId(456);
+        $request->setGoBackUrl("http://local/");
+        $request->setResponseUrl("http://local2/");
 
-        $this->assertEquals("{\"type\":\"pay\",\"timestamp\":123,\"id\":456,\"data\":{" .
+        $this->assertEquals("{\"type\":\"pay\",\"timestamp\":123,\"response-url\":\"http:\/\/local2\/\",\"back-url\":\"http:\/\/local\/\",\"id\":456,\"data\":{" .
                             "\"amount\":\"23.50\",\"currency\":\"EUR\"" .
                             "}}", $request->toJson());
     }
@@ -39,7 +36,7 @@ class RequestTests extends \PHPUnit_Framework_TestCase
      */
     public function testClientTransactionId()
     {
-        $request = PaymentRequest::createFromJson(json_decode("{\"type\":\"pay\",\"timestamp\":123,\"id\":456,\"data\":{" .
+        $request = PaymentRequest::createFromJson(json_decode("{\"type\":\"pay\",\"timestamp\":123,\"response-url\":null,\"back-url\":null,\"id\":456,\"data\":{" .
                             "\"amount\":\"23.50\",\"currency\":\"EUR\"" .
                             "}}"));
         $this->assertEquals(456, $request->getClientTransactionId());
@@ -60,7 +57,7 @@ class RequestTests extends \PHPUnit_Framework_TestCase
         $request->setTimestamp(123);
         $request->setOrder($order);
 
-        $this->assertEquals("{\"type\":\"pay\",\"timestamp\":123,\"data\":{" .
+        $this->assertEquals("{\"type\":\"pay\",\"timestamp\":123,\"response-url\":null,\"back-url\":null,\"data\":{" .
                             "\"amount\":\"23.50\",\"currency\":\"EUR\"" .
                             ",\"order\":\"foo\"}}", $request->toJson());
     }

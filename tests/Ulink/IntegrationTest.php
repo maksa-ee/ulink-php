@@ -1,17 +1,14 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: Alex
- * Date: 6/25/11
- * Time: 2:49 PM
- * To change this template use File | Settings | File Templates.
- */
 
 namespace Ulink;
- 
-class IntegrationTest extends \PHPUnit_Framework_TestCase {
 
-    private function getPublicKeyPem() {
+/**
+ * @author Alex Rudakov <alexandr.rudakov@modera.net>
+ */
+class IntegrationTest extends \PHPUnit_Framework_TestCase
+{
+    private function getPublicKeyPem()
+    {
         return  <<<EOD
 -----BEGIN PUBLIC KEY-----
 MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBANDiE2+Xi/WnO+s120NiiJhNyIButVu6
@@ -19,7 +16,8 @@ zxqlVzz0wy2j4kQVUC4ZRZD80IY+4wIiX2YxKBZKGnd2TtPkcJ/ljkUCAwEAAQ==
 -----END PUBLIC KEY-----
 EOD;
     }
-    private function getPrivateKeyPem() {
+    private function getPrivateKeyPem()
+    {
         return <<<EOD
 -----BEGIN RSA PRIVATE KEY-----
 MIIBOgIBAAJBANDiE2+Xi/WnO+s120NiiJhNyIButVu6zxqlVzz0wy2j4kQVUC4Z
@@ -37,11 +35,10 @@ EOD;
      * @test
      * @return void
      */
-    public function testPaymentOut() {
-
+    public function testPaymentOut()
+    {
         $privKey = $this->getPrivateKeyPem();
         $pubKey = $this->getPublicKeyPem();
-
 
         $order = new Order();
         $order->addItem(new OrderItem("Milk","Puhlqj ez", new Money("25.90")));
@@ -100,8 +97,8 @@ EOD;
         $this->assertEquals("9.00", (string)$orderItem2->getOneItemPrice());
     }
 
-    public function testPaymentIn() {
-
+    public function testPaymentIn()
+    {
         $privKey = $this->getPrivateKeyPem();
         $pubKey = $this->getPublicKeyPem();
 
@@ -117,8 +114,8 @@ EOD;
         $this->assertTrue($packet->validateAgainstKey($pubKey));
 
         $request = RequestFactory::createFromJson(
-                    CryptoUtils::unseal($packet->getRequest(), $privKey)
-                );
+            CryptoUtils::unseal($packet->getRequest(), $privKey)
+        );
         $this->assertType('Ulink\PaymentRequest', $request);
 
         $paymentRequest = $request;

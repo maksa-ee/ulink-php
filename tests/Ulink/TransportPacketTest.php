@@ -1,17 +1,14 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: Alex
- * Date: 6/24/11
- * Time: 12:28 PM
- * To change this template use File | Settings | File Templates.
- */
 
 namespace Ulink;
 
-class TransportPacketTest extends \PHPUnit_Framework_TestCase {
-
-    public function testToJsonFunction() {
+/**
+ * @author Alex Rudakov <alexandr.rudakov@modera.net>
+ */
+class TransportPacketTest extends \PHPUnit_Framework_TestCase
+{
+    public function testToJsonFunction()
+    {
         $signature = "=signature=";
         $encodedSignature = base64_encode($signature);
 
@@ -21,13 +18,13 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase {
         $packet->setClientId(15);
 
         $this->assertEquals(
-                "ulink:" . Protocol::VERSION . ":15:{bar:\"foo\"}:" . $encodedSignature,
-                $packet->toJson()
+            "ulink:" . Protocol::VERSION . ":15:{bar:\"foo\"}:" . $encodedSignature,
+            $packet->toJson()
         );
     }
 
-    public function testCreateFromJson() {
-
+    public function testCreateFromJson()
+    {
         $signature = "=signature=";
         $encodedSignature = base64_encode($signature);
 

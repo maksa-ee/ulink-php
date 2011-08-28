@@ -1,19 +1,15 @@
 <?php
-/**
- * Date: 8/17/11
- * Time: 11:13 AM
- * @author Alex Rudakov <alexandr.rudakov@modera.net>
- */
 
 namespace Ulink;
 
-
+/**
+ * @author Alex Rudakov <alexandr.rudakov@modera.net>
+ */
 class AuthResponse extends AuthRequest
 {
-
     private $isSuccess;
 
-    private $errors = array();
+    private $errors     = array();
     private $errorCodes = array();
 
     public function getType()
@@ -24,8 +20,8 @@ class AuthResponse extends AuthRequest
     public function getJsonData()
     {
         $data = parent::getJsonData();
-        $data['success'] = $this->isSuccess();
-        $data['errors'] = $this->getErrors();
+        $data['success']    = $this->isSuccess();
+        $data['errors']     = $this->getErrors();
         $data['errorCodes'] = $this->getErrorCodes();
         return $data;
     }
@@ -69,6 +65,4 @@ class AuthResponse extends AuthRequest
     {
         return $this->isSuccess;
     }
-
-
 }

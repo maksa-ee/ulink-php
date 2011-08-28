@@ -1,31 +1,54 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: Alex
- * Date: 6/24/11
- * Time: 12:03 PM
- * To change this template use File | Settings | File Templates.
- */
 
 namespace Ulink;
- 
-abstract class AbstractRequest implements Request {
 
+/**
+ * @author Alex Rudakov <alexandr.rudakov@modera.net>
+ * @author Cravler <http://github.com/cravler>
+ */
+abstract class AbstractRequest implements Request
+{
     protected $timestamp;
     protected $clientTransactionId;
+    
+    protected $goBackUrl;
+    protected $responseUrl;
 
-    public function getTimestamp() {
+    public function getGoBackUrl()
+    {
+        return $this->goBackUrl;
+    }
+
+    public function setGoBackUrl($goBackUrl)
+    {
+        $this->goBackUrl = $goBackUrl;
+    }
+
+    public function getResponseUrl()
+    {
+        return $this->responseUrl;
+    }
+
+    public function setResponseUrl($responseUrl)
+    {
+        $this->responseUrl = $responseUrl;
+    }
+
+    public function getTimestamp()
+    {
         if ($this->timestamp > 0) {
             return $this->timestamp;
         }
         return time();
     }
 
-    public function setTimestamp($timestamp) {
+    public function setTimestamp($timestamp)
+    {
         $this->timestamp = $timestamp;
     }
 
-    public function toJson() {
+    public function toJson()
+    {
         $data = $this->getJsonData();
         if (isset($data['data']) && is_array($data['data']) && !count($data['data'])) {
             $data['data'] = new \stdClass();
@@ -33,12 +56,15 @@ abstract class AbstractRequest implements Request {
         return json_encode($data);
     }
 
-    protected function getJsonData() {
-
+    protected function getJsonData()
+    {
         $data = array(
-                    'type' => $this->getType(),
-                    'timestamp' => $this->getTimestamp()
-               );
+            'type'         => $this->getType(),
+            'timestamp'    => $this->getTimestamp(),
+            'response-url' => $this->getResponseUrl(),
+            'back-url'     => $this->getGoBackUrl(),
+        );
+
         if ($this->getClientTransactionId()) {
             $data['id'] = $this->getClientTransactionId();
         }

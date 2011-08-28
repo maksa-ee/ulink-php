@@ -1,16 +1,13 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: Alex
- * Date: 6/24/11
- * Time: 12:04 PM
- * To change this template use File | Settings | File Templates.
- */
 
 namespace Ulink;
 
-class PaymentRequest extends AbstractRequest {
-
+/**
+ * @author Alex Rudakov <alexandr.rudakov@modera.net>
+ * @author Cravler <http://github.com/cravler>
+ */
+class PaymentRequest extends AbstractRequest
+{
     private $amount;
     private $currency;
 
@@ -50,11 +47,13 @@ class PaymentRequest extends AbstractRequest {
         return $this->order;
     }
 
-    public function getType() {
+    public function getType()
+    {
         return "pay";
     }
 
-    protected function getJsonData() {
+    protected function getJsonData()
+    {
         $localData = array(
             'amount' => (string)$this->getAmount(),
             'currency' => $this->getCurrency(),
@@ -79,6 +78,12 @@ class PaymentRequest extends AbstractRequest {
         $request->setCurrency($jsonData->currency);
         if (isset($json->id) && $json->id) {
             $request->setClientTransactionId($json->id);
+        }
+        if (isset($json->{'response-url'}) && $json->{'response-url'}) {
+            $request->setResponseUrl($json->{'response-url'});
+        }
+        if (isset($json->{'back-url'}) && $json->{'back-url'}) {
+            $request->setGoBackUrl($json->{'back-url'});
         }
         if (isset($jsonData->order) && $jsonData->order) {
             $request->setOrder(Order::createFromJson($jsonData->order));
