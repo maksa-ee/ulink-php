@@ -1,11 +1,8 @@
 <?php
-
-namespace Ulink;
-
 /**
  * @author Alex Rudakov <alexandr.rudakov@modera.net>
  */
-class Money
+class Ulink_Money
 {
     private $amount;
     const SCALE = 2;
@@ -18,15 +15,15 @@ class Money
         $this->amount = $amount;
     }
 
-    public function add(Money $another)
+    public function add(Ulink_Money $another)
     {
-        return new Money(bcadd($this->amount, $another->amount, self::SCALE));
+        return new Ulink_Money(bcadd($this->amount, $another->amount, self::SCALE));
     }
 
     public function multiply($factor)
     {
         $factor = (string) $factor;
-        return new Money(bcmul($this->amount, $factor, self::SCALE));
+        return new Ulink_Money(bcmul($this->amount, $factor, self::SCALE));
     }
 
     public function __toString()

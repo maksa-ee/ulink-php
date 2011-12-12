@@ -1,14 +1,12 @@
 <?php
 
-namespace Ulink;
-
 /**
  * @author Alex Rudakov <alexandr.rudakov@modera.net>
  */
-class Order
+class Ulink_Order
 {
     /**
-     * @var OrderItem[]
+     * @var Ulink_OrderItem[]
      */
     protected $items = array();
 
@@ -22,7 +20,7 @@ class Order
         return $this->items;
     }
 
-    public function addItem(OrderItem $item)
+    public function addItem(Ulink_OrderItem $item)
     {
         $this->items[] = $item;
     }
@@ -38,9 +36,9 @@ class Order
 
     public static function createFromJson($jsonData)
     {
-        $order = new Order();
+        $order = new Ulink_Order();
         foreach($jsonData as $item) {
-            $orderItem = new OrderItem($item->name, $item->descr, new Money($item->price), $item->qty);
+            $orderItem = new Ulink_OrderItem($item->name, $item->descr, new Ulink_Money($item->price), $item->qty);
             $order->addItem($orderItem);
         }
         return $order;

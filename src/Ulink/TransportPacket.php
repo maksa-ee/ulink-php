@@ -1,11 +1,9 @@
 <?php
 
-namespace Ulink;
-
 /**
  * @author Alex Rudakov <alexandr.rudakov@modera.net>
  */
-class TransportPacket
+class Ulink_TransportPacket
 {
     private $request;
     private $signature;
@@ -43,13 +41,13 @@ class TransportPacket
 
     public function toJson()
     {
-        return "ulink:" . Protocol::VERSION . ":" . $this->getClientId() . ":" . $this->getRequest() . ":" . base64_encode($this->getSignature());
+        return "ulink:" . Ulink_Protocol::VERSION . ":" . $this->getClientId() . ":" . $this->getRequest() . ":" . base64_encode($this->getSignature());
     }
 
     public static function createFromJson($json)
     {
         $parts = explode(':', $json);
-        $packet = new TransportPacket();
+        $packet = new Ulink_TransportPacket();
         $packet->setClientId($parts[2]);
         $packet->setRequest($parts[3]);
         $packet->setSignature(base64_decode($parts[4]));
@@ -58,7 +56,7 @@ class TransportPacket
 
     public function validateAgainstKey($publicKey)
     {
-        return CryptoUtils::isValidRSASignature(
+        return Ulink_CryptoUtils::isValidRSASignature(
             $this->getRequest(),
             $this->getSignature(),
             $publicKey

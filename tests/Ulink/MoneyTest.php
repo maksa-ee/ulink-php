@@ -1,28 +1,26 @@
 <?php
 
-namespace Ulink;
-
 /**
  * @author Alex Rudakov <alexandr.rudakov@modera.net>
  */
-class MoneyTest extends \PHPUnit_Framework_TestCase
+class Ulink_MoneyTest extends PHPUnit_Framework_TestCase
 {
     public function testMoneyRepresentationAsAStringIncludesDecimals()
     {
-        $money = new Money('10.00');
+        $money = new Ulink_Money('10.00');
         $this->assertEquals('10.00', (string) $money);
     }
 
     public function testMoneyAmountsCanBeAddedTogether()
     {
-        $money = new Money('10.45');
-        $finalMoney = $money->add(new Money('21.55'));
+        $money = new Ulink_Money('10.45');
+        $finalMoney = $money->add(new Ulink_Money('21.55'));
         $this->assertEquals('32.00', (string) $finalMoney);
     }
 
     public function testMoneyCanBeMultipliedForAFactor()
     {
-        $money = new Money('54.46');
+        $money = new Ulink_Money('54.46');
         $finalMoney = $money->multiply(100);
         $this->assertEquals('5446.00', (string) $finalMoney);
     }
@@ -34,7 +32,7 @@ class MoneyTest extends \PHPUnit_Framework_TestCase
      */
     public function testMoneyCanBeMultipliedForAFactorAndMaintainPrecision()
     {
-        $money = new Money('54.46');
+        $money = new Ulink_Money('54.46');
         $finalMoney = $money->multiply('100000000000000000');
         $this->assertEquals('5446000000000000000.00', (string) $finalMoney);
     }

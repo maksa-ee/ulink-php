@@ -1,11 +1,8 @@
 <?php
-
-namespace Ulink;
-
 /**
  * @author Alex Rudakov <alexandr.rudakov@modera.net>
  */
-class CryptoUtils
+class Ulink_CryptoUtils
 {
     public static function generateRSAKeyPair()
     {
@@ -20,7 +17,7 @@ class CryptoUtils
         $pubkey=openssl_pkey_get_details($res);
         $pubkey=$pubkey["key"];
 
-        return new KeyPair($privkey, $pubkey);
+        return new Ulink_KeyPair($privkey, $pubkey);
     }
 
     public static function sign($data, $privateKey)

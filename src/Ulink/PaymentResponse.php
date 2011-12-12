@@ -1,12 +1,10 @@
 <?php
 
-namespace Ulink;
-
 /**
  * @author Alex Rudakov <alexandr.rudakov@modera.net>
  * @author Cravler <http://github.com/cravler>
  */
-class PaymentResponse extends PaymentRequest implements Response
+class Ulink_PaymentResponse extends Ulink_PaymentRequest implements Ulink_Response
 {
     private $isSuccess;
     private $isTest = true;
@@ -85,8 +83,8 @@ class PaymentResponse extends PaymentRequest implements Response
     {
         $data = $json->data;
 
-        $response = new PaymentResponse();
-        $response->setAmount(new Money($data->amount));
+        $response = new Ulink_PaymentResponse();
+        $response->setAmount(new Ulink_Money($data->amount));
         $response->setCurrency($data->currency);
         if (isset($json->id) && $json->id) {
             $response->setClientTransactionId($json->id);
@@ -98,7 +96,7 @@ class PaymentResponse extends PaymentRequest implements Response
             $request->setGoBackUrl($json->{'back-url'});
         }
         if (isset($data->order)) {
-            $response->setOrder(Order::createFromJson($data->order));
+            $response->setOrder(Ulink_Order::createFromJson($data->order));
         }
         $response->setSuccess($json->success);
         if (isset($data->test)) {
@@ -108,5 +106,10 @@ class PaymentResponse extends PaymentRequest implements Response
         $response->setErrorCodes($json->errorCodes);
 
         return $response;
+    }
+
+    public static function clazz()
+    {
+        return __CLASS__;
     }
 }

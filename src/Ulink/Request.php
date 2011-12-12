@@ -1,11 +1,9 @@
 <?php
 
-namespace Ulink;
-
 /**
  * @author Alex Rudakov <alexandr.rudakov@modera.net>
  */
-interface Request
+interface Ulink_Request
 {
     const CURRENCY_EURO = "EUR";
     const CURRENCY_US_DOLLAR = "USD";

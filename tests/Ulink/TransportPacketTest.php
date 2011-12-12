@@ -1,24 +1,22 @@
 <?php
 
-namespace Ulink;
-
 /**
  * @author Alex Rudakov <alexandr.rudakov@modera.net>
  */
-class TransportPacketTest extends \PHPUnit_Framework_TestCase
+class Ulink_TransportPacketTest extends PHPUnit_Framework_TestCase
 {
     public function testToJsonFunction()
     {
         $signature = "=signature=";
         $encodedSignature = base64_encode($signature);
 
-        $packet = new TransportPacket();
+        $packet = new Ulink_TransportPacket();
         $packet->setRequest("{bar:\"foo\"}");
         $packet->setSignature($signature);
         $packet->setClientId(15);
 
         $this->assertEquals(
-            "ulink:" . Protocol::VERSION . ":15:{bar:\"foo\"}:" . $encodedSignature,
+            "ulink:" . Ulink_Protocol::VERSION . ":15:{bar:\"foo\"}:" . $encodedSignature,
             $packet->toJson()
         );
     }
@@ -28,7 +26,7 @@ class TransportPacketTest extends \PHPUnit_Framework_TestCase
         $signature = "=signature=";
         $encodedSignature = base64_encode($signature);
 
-        $packet = TransportPacket::createFromJson('ulink:0.9:15:foobar:'.$encodedSignature);
+        $packet = Ulink_TransportPacket::createFromJson('ulink:0.9:15:foobar:'.$encodedSignature);
         $this->assertEquals('foobar', $packet->getRequest());
         $this->assertEquals('=signature=', $packet->getSignature());
         $this->assertEquals(15, $packet->getClientId());

@@ -1,11 +1,10 @@
 <?php
 
-namespace Ulink;
 
 /**
  * @author Alex Rudakov <alexandr.rudakov@modera.net>
  */
-class KeyPair
+class Ulink_KeyPair
 {
     private $privateKey;
     private $publicKey;

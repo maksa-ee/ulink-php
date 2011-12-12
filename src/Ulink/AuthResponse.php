@@ -1,11 +1,8 @@
 <?php
-
-namespace Ulink;
-
 /**
  * @author Alex Rudakov <alexandr.rudakov@modera.net>
  */
-class AuthResponse extends AuthRequest
+class Ulink_AuthResponse extends Ulink_AuthRequest
 {
     private $isSuccess;
 
@@ -64,5 +61,10 @@ class AuthResponse extends AuthRequest
     public function isSuccess()
     {
         return $this->isSuccess;
+    }
+
+    public static function clazz()
+    {
+        return __CLASS__;
     }
 }

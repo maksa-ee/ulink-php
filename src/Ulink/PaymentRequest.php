@@ -1,12 +1,10 @@
 <?php
 
-namespace Ulink;
-
 /**
  * @author Alex Rudakov <alexandr.rudakov@modera.net>
  * @author Cravler <http://github.com/cravler>
  */
-class PaymentRequest extends AbstractRequest
+class Ulink_PaymentRequest extends Ulink_AbstractRequest
 {
     private $amount;
     private $currency;
@@ -17,7 +15,7 @@ class PaymentRequest extends AbstractRequest
     private $order;
 
 
-    public function setAmount(Money $amount)
+    public function setAmount(Ulink_Money $amount)
     {
         $this->amount = $amount;
     }
@@ -37,7 +35,7 @@ class PaymentRequest extends AbstractRequest
         return $this->currency;
     }
 
-    public function setOrder(Order $order)
+    public function setOrder(Ulink_Order $order)
     {
         $this->order = $order;
     }
@@ -73,8 +71,8 @@ class PaymentRequest extends AbstractRequest
     {
         $jsonData = $json->data;
 
-        $request = new PaymentRequest();
-        $request->setAmount(new Money($jsonData->amount));
+        $request = new Ulink_PaymentRequest();
+        $request->setAmount(new Ulink_Money($jsonData->amount));
         $request->setCurrency($jsonData->currency);
         if (isset($json->id) && $json->id) {
             $request->setClientTransactionId($json->id);
@@ -86,8 +84,13 @@ class PaymentRequest extends AbstractRequest
             $request->setGoBackUrl($json->{'back-url'});
         }
         if (isset($jsonData->order) && $jsonData->order) {
-            $request->setOrder(Order::createFromJson($jsonData->order));
+            $request->setOrder(Ulink_Order::createFromJson($jsonData->order));
         }
         return $request;
+    }
+
+    public static function clazz()
+    {
+        return __CLASS__;
     }
 }

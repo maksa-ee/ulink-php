@@ -1,12 +1,10 @@
 <?php
 
-namespace Ulink;
-
 /**
  * @author Alex Rudakov <alexandr.rudakov@modera.net>
  * @author Cravler <http://github.com/cravler>
  */
-abstract class AbstractRequest implements Request
+abstract class Ulink_AbstractRequest implements Ulink_Request
 {
     protected $timestamp;
     protected $clientTransactionId;
@@ -51,7 +49,7 @@ abstract class AbstractRequest implements Request
     {
         $data = $this->getJsonData();
         if (isset($data['data']) && is_array($data['data']) && !count($data['data'])) {
-            $data['data'] = new \stdClass();
+            $data['data'] = new stdClass();
         }
         return json_encode($data);
     }
@@ -79,10 +77,5 @@ abstract class AbstractRequest implements Request
     public function getClientTransactionId()
     {
         return $this->clientTransactionId;
-    }
-
-    public static function clazz()
-    {
-        return get_called_class();
     }
 }

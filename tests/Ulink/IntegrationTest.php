@@ -1,21 +1,20 @@
 <?php
 
-namespace Ulink;
-
 /**
  * @author Alex Rudakov <alexandr.rudakov@modera.net>
  */
-class IntegrationTest extends \PHPUnit_Framework_TestCase
+class Ulink_IntegrationTest extends PHPUnit_Framework_TestCase
 {
     private function getPublicKeyPem()
     {
-        return  <<<EOD
+        return <<<EOD
 -----BEGIN PUBLIC KEY-----
 MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBANDiE2+Xi/WnO+s120NiiJhNyIButVu6
 zxqlVzz0wy2j4kQVUC4ZRZD80IY+4wIiX2YxKBZKGnd2TtPkcJ/ljkUCAwEAAQ==
 -----END PUBLIC KEY-----
 EOD;
     }
+
     private function getPrivateKeyPem()
     {
         return <<<EOD
@@ -40,27 +39,27 @@ EOD;
         $privKey = $this->getPrivateKeyPem();
         $pubKey = $this->getPublicKeyPem();
 
-        $order = new Order();
-        $order->addItem(new OrderItem("Milk","Puhlqj ez", new Money("25.90")));
-        $order->addItem(new OrderItem("Mja4ik","Puhlqj mja4", new Money("9.00")));
+        $order = new Ulink_Order();
+        $order->addItem(new Ulink_OrderItem("Milk", "Puhlqj ez", new Ulink_Money("25.90")));
+        $order->addItem(new Ulink_OrderItem("Mja4ik", "Puhlqj mja4", new Ulink_Money("9.00")));
 
-        $request = new PaymentRequest();
-        $request->setAmount(new Money("34.90"));
-        $request->setCurrency(Request::CURRENCY_EURO);
+        $request = new Ulink_PaymentRequest();
+        $request->setAmount(new Ulink_Money("34.90"));
+        $request->setCurrency(Ulink_Request::CURRENCY_EURO);
         $request->setOrder($order);
 
         $requestJson = $request->toJson();
-        $requestJson = CryptoUtils::seal($requestJson, $pubKey);
-        $packet = new TransportPacket();
+        $requestJson = Ulink_CryptoUtils::seal($requestJson, $pubKey);
+        $packet = new Ulink_TransportPacket();
         $packet->setRequest($requestJson);
-        $signature = CryptoUtils::sign($requestJson, $privKey);
+        $signature = Ulink_CryptoUtils::sign($requestJson, $privKey);
 
         $packet->setSignature($signature);
         $packet->setClientId(15);
 
         $rawData = $packet->toJson();
 
-        $packet = TransportPacket::createFromJson($rawData);
+        $packet = Ulink_TransportPacket::createFromJson($rawData);
         $this->assertNotNull($packet);
 
         $this->assertEquals(15, $packet->getClientId());
@@ -71,10 +70,10 @@ EOD;
 
         $this->assertTrue($packet->validateAgainstKey($pubKey));
 
-        $request = RequestFactory::createFromJson(
-                    CryptoUtils::unseal($packet->getRequest(), $privKey)
-                );
-        $this->assertType('Ulink\PaymentRequest', $request);
+        $request = Ulink_RequestFactory::createFromJson(
+            Ulink_CryptoUtils::unseal($packet->getRequest(), $privKey)
+        );
+        $this->assertInstanceof('Ulink_PaymentRequest', $request);
 
         $paymentRequest = $request;
         $this->assertEquals("34.90", (string)$paymentRequest->getAmount());
@@ -104,7 +103,7 @@ EOD;
 
         $rawData = 'ulink:0.9:15:XKXvKJpR1iZZiTyYfctuDbnnIAj8WDaCtS9EbYlZxTKdUM9fbfdWWrcg7Lt7k5EuWxP8ai3q1lLe8tNeXKNaTURmFHjWs0WFObssqjKPW0LOxtqEfFPmZ88M1IkjrlYGV1UDKq/vbbdN2d2VVjv1poQr3aW9sXq4UKgUcVsM1irA0bswreyo32UMat62UVQa/jO1ktpc0cxv5CEny75zY0s1RS+9s8orFX6uQPRJOpFRQ2vRlUWjrnwdhdQrBtqzInml09Cs9MiZEaLcHTCrLUBIVJ4h@SgiRRv+oOinM3vA9aDOsfTGjzLePXWRD/ahmryLYEMpK84F4lV2uZAJflxjFDI6+sjX1DGq0vNDE0RUOLw5aSw==:onccukVgVf1T+cyA2CfExPdRVYefv9PnDjdcYC6ak7/f/xt2NC7VoZ6Odg3SxLQe1LA0sR+GkyqwRFXc1BaZqg==';
 
-        $packet = TransportPacket::createFromJson($rawData);
+        $packet = Ulink_TransportPacket::createFromJson($rawData);
         $this->assertNotNull($packet);
 
         $this->assertEquals(15, $packet->getClientId());
@@ -113,10 +112,10 @@ EOD;
 
         $this->assertTrue($packet->validateAgainstKey($pubKey));
 
-        $request = RequestFactory::createFromJson(
-            CryptoUtils::unseal($packet->getRequest(), $privKey)
+        $request = Ulink_RequestFactory::createFromJson(
+            Ulink_CryptoUtils::unseal($packet->getRequest(), $privKey)
         );
-        $this->assertType('Ulink\PaymentRequest', $request);
+        $this->assertInstanceof('Ulink_PaymentRequest', $request);
 
         $paymentRequest = $request;
         $this->assertEquals("34.90", (string)$paymentRequest->getAmount());

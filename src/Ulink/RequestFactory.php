@@ -1,11 +1,9 @@
 <?php
 
-namespace Ulink;
-
 /**
  * @author Alex Rudakov <alexandr.rudakov@modera.net>
  */
-class RequestFactory
+class Ulink_RequestFactory
 {
     public static function createFromJson($json)
     {
@@ -13,15 +11,15 @@ class RequestFactory
 
         $type = $jsonData->type;
         if ($type == "auth") {
-            $request = AuthRequest::createFromJson($jsonData);
+            $request = Ulink_AuthRequest::createFromJson($jsonData);
         } else if ($type == "pay") {
-            $request = PaymentRequest::createFromJson($jsonData);
+            $request = Ulink_PaymentRequest::createFromJson($jsonData);
         } else if ($type == "auth-response") {
-            $request = AuthResponse::createFromJson($jsonData);
+            $request = Ulink_AuthResponse::createFromJson($jsonData);
         } else if ($type == "pay-response") {
-            $request = PaymentResponse::createFromJson($jsonData);
+            $request = Ulink_PaymentResponse::createFromJson($jsonData);
         } else {
-            throw new \Exception("type should be one of auth or pay. Given: " + $type);
+            throw new Exception("type should be one of auth or pay. Given: " + $type);
         }
         $request->setTimestamp(intval($jsonData->timestamp));
         return $request;

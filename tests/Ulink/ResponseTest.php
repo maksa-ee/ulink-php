@@ -1,17 +1,15 @@
 <?php
 
-namespace Ulink;
-
 /**
  * @group response
  * @author Alex Rudakov <alexandr.rudakov@modera.net>
  * @author Cravler <http://github.com/cravler>
  */
-class ResponseTest extends \PHPUnit_Framework_TestCase
+class Ulink_ResponseTest extends PHPUnit_Framework_TestCase
 {
     public function testSuccessAuthResponse()
     {
-        $response = new AuthResponse();
+        $response = new Ulink_AuthResponse();
         $response->setSuccess(true);
         $response->setTimestamp(123);
         $response->setClientTransactionId(456);
@@ -20,13 +18,13 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
 
     public function testClientTransactionIdPay()
     {
-        $response = RequestFactory::createFromJson("{\"type\":\"pay-response\",\"timestamp\":123,\"id\":456,\"data\":{\"amount\":\"23.50\",\"currency\":\"EUR\"},\"success\":true,\"errors\":[],\"errorCodes\":[]}");
+        $response = Ulink_RequestFactory::createFromJson("{\"type\":\"pay-response\",\"timestamp\":123,\"id\":456,\"data\":{\"amount\":\"23.50\",\"currency\":\"EUR\"},\"success\":true,\"errors\":[],\"errorCodes\":[]}");
         $this->assertEquals(456, $response->getClientTransactionId());
     }
 
     public function testFailedAuthResponse()
     {
-        $response = new AuthResponse();
+        $response = new Ulink_AuthResponse();
         $response->setSuccess(false);
         $response->setTimestamp(123);
         $response->setClientTransactionId(456);
@@ -37,8 +35,8 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
 
     public function testSuccessPayRequest()
     {
-        $response = new PaymentResponse();
-        $response->setAmount(new Money("23.50"));
+        $response = new Ulink_PaymentResponse();
+        $response->setAmount(new Ulink_Money("23.50"));
         $response->setCurrency("EUR");
         $response->setTimestamp(123);
         $response->setClientTransactionId(456);
@@ -50,8 +48,8 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
 
     public function testFailedPayRequest()
     {
-        $response = new PaymentResponse();
-        $response->setAmount(new Money("23.50"));
+        $response = new Ulink_PaymentResponse();
+        $response->setAmount(new Ulink_Money("23.50"));
         $response->setCurrency("EUR");
         $response->setTimestamp(123);
         $response->setClientTransactionId(456);
@@ -67,12 +65,12 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     {
         $json = "{\"type\":\"pay-response\",\"timestamp\":123,\"id\":456,\"data\":{\"amount\":\"23.50\",\"currency\":\"EUR\"},\"success\":true,\"test\":true,\"errors\":[\"Wrong signature\"],\"errorCodes\":[17987]}";
 
-        $response = RequestFactory::createFromJson($json);
-        $this->assertEquals(PaymentResponse::clazz(), get_class($response));
+        $response = Ulink_RequestFactory::createFromJson($json);
+        $this->assertEquals(Ulink_PaymentResponse::clazz(), get_class($response));
         $this->assertEquals(123, $response->getTimestamp());
 
         $paymentResponse = $response;
-        $this->assertEquals(new Money("23.50"), $paymentResponse->getAmount());
+        $this->assertEquals(new Ulink_Money("23.50"), $paymentResponse->getAmount());
         $this->assertEquals("EUR", $paymentResponse->getCurrency());
         $this->assertEquals(123, $paymentResponse->getTimestamp());
         $this->assertTrue($paymentResponse->isSuccess());

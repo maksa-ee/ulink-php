@@ -1,11 +1,9 @@
 <?php
 
-namespace Ulink;
-
 /**
  * @author Alex Rudakov <alexandr.rudakov@modera.net>
  */
-class AuthRequest extends AbstractRequest implements Response
+class Ulink_AuthRequest extends Ulink_AbstractRequest implements Ulink_Response
 {
     public function getType()
     {
@@ -21,5 +19,10 @@ class AuthRequest extends AbstractRequest implements Response
 
     public static function createFromJson($jsonData)
     {
+    }
+
+    public static function clazz()
+    {
+        return __CLASS__;
     }
 }

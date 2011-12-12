@@ -1,11 +1,9 @@
 <?php
 
-namespace Ulink;
-
 /**
  * @author Alex Rudakov <alexandr.rudakov@modera.net>
  */
-class Protocol
+class Ulink_Protocol
 {
     const VERSION = '0.9';
 }

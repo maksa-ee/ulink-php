@@ -1,11 +1,9 @@
 <?php
 
-namespace Ulink;
-
 /**
  * @author Alex Rudakov <alexandr.rudakov@modera.net>
  */
-class CryptoUtilsTest extends \PHPUnit_Framework_TestCase
+class Ulink_CryptoUtilsTest extends PHPUnit_Framework_TestCase
 {
 //
 //    /**
@@ -50,23 +48,23 @@ zxqlVzz0wy2j4kQVUC4ZRZD80IY+4wIiX2YxKBZKGnd2TtPkcJ/ljkUCAwEAAQ==
 -----END PUBLIC KEY-----
 EOD;
 
-        $pair = new KeyPair($privKey, $pubKey);
+        $pair = new Ulink_KeyPair($privKey, $pubKey);
 
         $myData = "foobarbaz";
 
         $this->assertNotNull($pair->getPrivateKey());
 
-        $signatrue = CryptoUtils::sign($myData, $pair->getPrivateKey());
+        $signatrue = Ulink_CryptoUtils::sign($myData, $pair->getPrivateKey());
 
         $this->assertNotNull($signatrue);
 
-        $this->assertTrue(CryptoUtils::isValidRSASignature("foobarbaz", $signatrue, $pair->getPublicKey()));
-        $this->assertFalse(CryptoUtils::isValidRSASignature("foo", $signatrue, $pair->getPublicKey()));
+        $this->assertTrue(Ulink_CryptoUtils::isValidRSASignature("foobarbaz", $signatrue, $pair->getPublicKey()));
+        $this->assertFalse(Ulink_CryptoUtils::isValidRSASignature("foo", $signatrue, $pair->getPublicKey()));
 
 
-        $sealed = CryptoUtils::seal($myData, $pair->getPublicKey());
+        $sealed = Ulink_CryptoUtils::seal($myData, $pair->getPublicKey());
 
-        $opened = CryptoUtils::unseal($sealed, $pair->getPrivateKey());
+        $opened = Ulink_CryptoUtils::unseal($sealed, $pair->getPrivateKey());
 
         $this->assertNotEquals($myData, $sealed);
         $this->assertEquals($myData, $opened);
@@ -97,7 +95,7 @@ CHnxFy4EjHqB20mTKHQ/AkEAsgxTePttK36TdiX8QuS8/cxZ47tQp5QzxGCP4VpA
 EOD;
 
         $sealed = 'HOQnoFwOjZoU@QeR2pU68ShpGDoipKCPWWlu28ih8vjUkI4oftMD6qgP9sa0KN8QTlcw1QLWpbvnkZIKxJ5wu12AXtgv6EdIjuvS+GNT4BcWGZz7cadTwtB5JADO8FZMKcEsShO9v1gjrJaobUZxBp5Y0roJJt0zG+feUsAlzHzswVfJ+ieEavTo=';
-        $opened = CryptoUtils::unseal($sealed, $privateKey);
+        $opened = Ulink_CryptoUtils::unseal($sealed, $privateKey);
 
         $this->assertEquals("foobarbaz", $opened);
     }

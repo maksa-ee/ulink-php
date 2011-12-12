@@ -3,9 +3,16 @@
 /**
  * @author Alex Rudakov <alexandr.rudakov@modera.net>
  */
-spl_autoload_register(function($className)
+function maksa_autoload($className)
 {
     $path = str_replace(array("_", "\\"), "/", $className);
-    require_once '../src/' . $path . ".php";
-});
+    $filename = '../src/' . $path . ".php";
+    if (file_exists($filename)) {
+        require_once $filename;
+        return class_exists($className, false);
+    } else {
+        return false;
+    }
+}
+spl_autoload_register('maksa_autoload');
 

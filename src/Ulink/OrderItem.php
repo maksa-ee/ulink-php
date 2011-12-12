@@ -1,18 +1,17 @@
 <?php
 
-namespace Ulink;
 
 /**
  * @author Alex Rudakov <alexandr.rudakov@modera.net>
  */
-class OrderItem
+class Ulink_OrderItem
 {
     private $name;
     private $description;
     private $quantity;
     private $oneItemPrice;
 
-    public function __construct($name, $description, Money $oneItemPrice, $quantity = 1)
+    public function __construct($name, $description, Ulink_Money $oneItemPrice, $quantity = 1)
     {
         $this->name = $name;
         $this->description = $description;
